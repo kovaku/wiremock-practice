@@ -22,6 +22,7 @@ public class WireMockRunner {
             WireMockConfiguration wireMockConfiguration = WireMockConfiguration.options();
 
             wireMockConfiguration.port(wiremockPort);
+            wireMockConfiguration.usingFilesUnderClasspath("definitions");
             wireMockConfiguration.extensions(new ResponseTemplateTransformer(true));
 
             wireMockServer = new WireMockServer(wireMockConfiguration);

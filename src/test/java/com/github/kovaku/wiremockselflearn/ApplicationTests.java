@@ -1,29 +1,41 @@
 package com.github.kovaku.wiremockselflearn;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
 
+import io.restassured.http.ContentType;
+import io.restassured.specification.RequestSpecification;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest({"server.port=8080"})
-public class ApplicationTests implements ApplicationContextAware {
+public class ApplicationTests {
 
-	private ApplicationContext applicationContext;
+  @Value("http://localhost:${server.port}")
+  private String wireMockHost;
 
-	@Test
-	public void contextLoads() {
-		assertThat("The application should be started!", applicationContext, notNullValue());
-	}
+  @Test
+  public void todayTest() {
+    getCommonRequestSpecification()
+        .when()
+        .get("/today")
+        .then()
+        .assertThat()
+        .body(equalTo(LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)));
+  }
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-	}
+  private RequestSpecification getCommonRequestSpecification() {
+    return given()
+        .accept(ContentType.JSON)
+        .contentType(ContentType.JSON)
+        .baseUri(wireMockHost)
+        .log()
+        .all(true);
+  }
 }
