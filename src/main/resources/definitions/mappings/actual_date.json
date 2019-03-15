@@ -3,7 +3,6 @@
     "urlPath": "/today"
   },
   "response": {
-    "body": "{{now format='yyyy-MM-dd'}}",
-    "transformers": ["response-template"]
+    "body": "{{now format='yyyy-MM-dd'}}"
   }
 }

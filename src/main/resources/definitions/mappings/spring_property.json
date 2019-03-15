@@ -1,0 +1,8 @@
+{
+  "request": {
+    "urlPath": "/property"
+  },
+  "response": {
+    "body": "The response is: ${resolve.me}"
+  }
+}
