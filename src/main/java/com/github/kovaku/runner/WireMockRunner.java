@@ -17,9 +17,6 @@ public class WireMockRunner {
   @Autowired
   private List<ResponseDefinitionTransformer> transformers;
 
-  @Autowired
-  private Helper<String> propertyLoaderHelper;
-
   @Value("${server.port:8080}")
   private Integer wiremockPort;
 
