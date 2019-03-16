@@ -1,5 +1,7 @@
 package com.github.kovaku.config;
 
+import com.github.jknack.handlebars.Helper;
+import com.github.kovaku.helper.PropertyLoaderHelper;
 import com.github.kovaku.runner.WireMockRunner;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
@@ -12,8 +14,13 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationConfig {
 
   @Bean
-  public ResponseTemplateTransformer responseTemplateTransformer() {
-    return new ResponseTemplateTransformer(true);
+  public Helper<String> propertyLoaderHelper() {
+    return new PropertyLoaderHelper();
+  }
+
+  @Bean
+  public ResponseTemplateTransformer responseTemplateTransformerWithHandler() {
+    return new ResponseTemplateTransformer(true, "property", propertyLoaderHelper());
   }
 
   @Bean

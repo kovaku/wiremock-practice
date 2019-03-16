@@ -1,0 +1,8 @@
+{
+  "request": {
+    "urlPath": "/helper_with_file"
+  },
+  "response": {
+    "body": "The response is: {{property 'resolve.me.handlebar.custom' file='definitions/property/mappings.properties'}}"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "request": {
+    "urlPath": "/helper"
+  },
+  "response": {
+    "body": "The response is: {{property 'resolve.me.handlebar.default'}}"
+  }
+}

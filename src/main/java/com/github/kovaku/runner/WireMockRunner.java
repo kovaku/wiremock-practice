@@ -1,5 +1,6 @@
 package com.github.kovaku.runner;
 
+import com.github.jknack.handlebars.Helper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.extension.ResponseDefinitionTransformer;
@@ -11,28 +12,31 @@ import org.springframework.beans.factory.annotation.Value;
 
 public class WireMockRunner {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(WireMockRunner.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(WireMockRunner.class);
 
-    @Autowired
-    private List<ResponseDefinitionTransformer> transformers;
+  @Autowired
+  private List<ResponseDefinitionTransformer> transformers;
 
-    @Value("${server.port:8080}")
-    private Integer wiremockPort;
+  @Autowired
+  private Helper<String> propertyLoaderHelper;
 
-    private WireMockServer wireMockServer;
+  @Value("${server.port:8080}")
+  private Integer wiremockPort;
 
-    public WireMockServer getWireMockServer() {
-        if (wireMockServer == null) {
-            WireMockConfiguration wireMockConfiguration = WireMockConfiguration.options();
+  private WireMockServer wireMockServer;
 
-            wireMockConfiguration.port(wiremockPort);
-            wireMockConfiguration.usingFilesUnderClasspath("definitions");
-            transformers.forEach(wireMockConfiguration::extensions);
+  public WireMockServer getWireMockServer() {
+    if (wireMockServer == null) {
+      WireMockConfiguration wireMockConfiguration = WireMockConfiguration.options();
 
-            wireMockServer = new WireMockServer(wireMockConfiguration);
-            LOGGER.info("WireMock server is starting at port: {}", wiremockPort);
-            wireMockServer.start();
-        }
-        return wireMockServer;
+      wireMockConfiguration.port(wiremockPort);
+      wireMockConfiguration.usingFilesUnderClasspath("definitions");
+      transformers.forEach(wireMockConfiguration::extensions);
+
+      wireMockServer = new WireMockServer(wireMockConfiguration);
+      LOGGER.info("WireMock server is starting at port: {}", wiremockPort);
+      wireMockServer.start();
     }
+    return wireMockServer;
+  }
 }
